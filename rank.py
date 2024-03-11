@@ -3,11 +3,21 @@ import pandas as pd
 from collections import Counter
 import numpy as np
 import re
+import argparse
+import os
 
-amplicon = input("Please enter target of interest:\n")
-question=input("Do you wish to supply with desired insertion sequence (Y or N):\n")
-if question==("Y"):
-    insert=input("Please enter insert:\n")
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Generate pegRNA sequence.")
+    parser.add_argument("--amplicon", type=str, help="Target amplicon sequence")
+    parser.add_argument("--insert", type=str, help="Desired insertion sequence (optional)")
+    return parser.parse_args()
+
+args = parse_arguments()
+
+amplicon = args.amplicon.upper()
+
+if args.insert:
+    insert = args.insert.upper()
 else:
     default_insert1="atgatcctgacgacggagaccgccgtcgtcgacaagcc"
     default_insert2="gatgatcctgacgacggagaccgccgtcgtcgacaagccg"
@@ -117,7 +127,8 @@ def truncate_seq(seq):
         seq = seq
     return seq
 
-if question==("Y"):
+if args.insert:
+    insert = args.insert.upper()
     pegRNA_list=pegRNA_generation(amplicon, insert)
 else:
     group1=pegRNA_generation(amplicon, default_insert1)
@@ -137,12 +148,21 @@ for index in range(len(pegRNA_list)):
 model = torch.load('mlp.pt')
 model.eval()
 
-input = torch.Tensor(kmer_store)
-output = model(input)
-res = output.detach().numpy()
+output_filename = 'Result.csv'
+counter = 1
+
+while os.path.exists(output_filename):
+    output_filename = f'Result_{counter}.csv'
+    counter += 1
+
+input_tensor = torch.Tensor(kmer_store)
+output_tensor = model(input_tensor)
+res = output_tensor.detach().numpy()
 prob = res[:, 1]
 sequence = pd.Series(pegRNA_list, name='pegRNA Sequence')
 prob = pd.Series(prob, name='Score')
-df = pd.concat([sequence, prob], axis=1)
-df=df.sort_values(by=['Score'],ascending=False)
-df.to_csv('Result.csv', index=None)
+result_df = pd.concat([sequence, prob], axis=1)
+result_df = result_df.sort_values(by=['Score'], ascending=False)
+result_df.to_csv(output_filename, index=None)
+
+print(f"Results saved to {output_filename}")
