@@ -40,6 +40,11 @@ pegRNA_rank instructions: Make sure you have Python>=3.6 and PyTorch>=1.5 instal
 pip install -r requirements.txt
 ```
 
+If you need to type python3 to use python and you are having problems with dependencies not being available, please consider using pip3
+```
+pip3 install -r requirements.txt
+```
+
 ## Alternative method of running pegRNA_rank
 When you only have a single insert or amplicon that you want to screen across a much larger library, consider using the the following command to read and loop each line within a text file.
 
