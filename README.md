@@ -1,5 +1,5 @@
 # Modified atgRNA_rank
-This is a modified version of the deep learning MLP model to rank atgRNA sequence by the [Abudayyeh-Gootenberg Lab](https://github.com/abugoot-lab/pegRNA_rank). Please refer to and cite their paper for information about atgRNA.
+This is a modified version of the deep learning MLP model to rank atgRNA sequence by the [Abudayyeh-Gootenberg Lab](https://github.com/abugoot-lab/pegRNA_rank). Please refer to and cite their paper for information about atgRNA. This fork is more intended for personal use rather than development for general use.
 
 Yarnall, M. T., Ioannidi, E. I., Schmitt-Ulms, C., Krajeski, R. N., Lim, J., Villiger, L., ... & Gootenberg, J. S. (2023). 
 [Drag-and-drop genome insertion of large sequences without double-strand DNA cleavage using CRISPR-directed integrases](https://www.nature.com/articles/s41587-022-01527-4). Nature Biotechnology, 41(4), 500-512.
